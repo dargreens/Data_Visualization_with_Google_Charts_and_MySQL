@@ -1,0 +1,46 @@
+<p>select site</p>
+<div id="chart_div" ></div>
+
+<form action="" method="POST">
+    {% csrf_token %}
+<input type="text" name="text_box">    
+<input type="submit" id="search" name="search">
+</form>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<!-- data from backend stored in hidden div-->
+<div id="my-data" style="visibility: hidden"> {{data}} </div>
+<div style="color: red;"> {{invalid_request}} </div>
+
+
+<script>
+
+//parse data stored in div    
+const myData = JSON.parse(document.getElementById('my-data').textContent);
+
+//for(let i of myData){g.push([new Date(i[0]),i[1]])};
+
+//google charts lib
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart(){  
+    
+    var new_data = new google.visualization.DataTable();
+    
+    new_data.addColumn('number', 'S');
+    new_data.addColumn('number', 'P');    
+    new_data.addRows(myData);
+    
+        
+
+var options = {'title':'site_data', 'height':'400', 'width':'300'};
+var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+chart.draw(new_data, options);
+    
+} 
+
+</script>
+
+
